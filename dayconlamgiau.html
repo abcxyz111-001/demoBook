@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read - Thư viện Dạy Con Làm Giàu</title>
+    <title>Dạy Con Làm Giàu - Thư Viện</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -17,8 +17,22 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
                 }
             }
         }
@@ -27,109 +41,166 @@
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #888;
+            background: #cbd5e1;
             border-radius: 4px;
         }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        /* Iframe Responsive Fix for Drive */
         .drive-iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
+        
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-900 transition-colors duration-300 min-h-screen">
+<body class="bg-gray-50 text-slate-800 transition-colors duration-500 min-h-screen dark:bg-slate-900 dark:text-slate-100 selection:bg-yellow-500 selection:text-white">
 
     <!-- App Container -->
-    <div id="app">
+    <div id="app" class="relative">
         
         <!-- HEADER -->
-        <header class="sticky top-0 z-20 backdrop-blur-md border-b bg-white/90 border-gray-200 dark:bg-gray-900/90 dark:border-gray-700 transition-colors duration-300">
-            <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-                <div class="flex items-center space-x-2 cursor-pointer" onclick="goHome()">
-                    <i data-lucide="book" class="text-yellow-500 w-7 h-7"></i>
-                    <h1 class="text-xl font-bold tracking-tight hidden sm:block dark:text-white">Rich Dad <span class="text-yellow-500">Reader</span></h1>
+        <header class="fixed top-0 inset-x-0 z-50 glass transition-all duration-300">
+            <div class="container mx-auto px-4 h-20 flex items-center justify-between gap-4">
+                
+                <!-- Left Section: Back Button & Logo -->
+                <div class="flex items-center gap-4">
+                    <!-- NÚT BACK (GẮN LINK Ở ĐÂY) -->
+                    <a href="https://google.com" target="_blank" class="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-500 hover:text-yellow-600 hover:border-yellow-500 hover:shadow-md transition-all duration-300 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400 dark:hover:text-yellow-400" title="Quay lại trang chính">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </a>
+
+                    <!-- Logo Click to Home -->
+                    <div class="flex items-center gap-3 cursor-pointer group" onclick="goHome()">
+                        <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-600 shadow-lg shadow-yellow-500/20 group-hover:scale-105 transition-transform duration-300">
+                            <i data-lucide="book-open" class="text-white w-6 h-6"></i>
+                        </div>
+                        <div class="hidden sm:block">
+                            <h1 class="text-lg font-bold leading-none tracking-tight group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">Dạy Con</h1>
+                            <span class="text-sm font-semibold text-yellow-600 dark:text-yellow-500">Làm Giàu</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="flex-1 max-w-md mx-4">
+                <!-- Center Section: Search Bar -->
+                <div class="flex-1 max-w-xl mx-auto transition-all duration-300">
                     <div class="relative group">
-                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="search" class="text-gray-400 group-focus-within:text-yellow-500 transition-colors w-5 h-5"></i>
+                        </div>
                         <input
                             type="text"
                             id="search-input"
                             oninput="handleSearch()"
-                            placeholder="Tìm kiếm sách..."
-                            class="w-full pl-10 pr-4 py-2 rounded-full border outline-none transition-all bg-gray-50 border-gray-200 focus:border-yellow-500 focus:bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:border-yellow-500"
+                            placeholder="Tìm kiếm sách, tập..."
+                            class="w-full pl-11 pr-4 py-3 rounded-2xl bg-gray-100/50 border border-transparent focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/10 outline-none transition-all duration-300 dark:bg-slate-800/50 dark:focus:bg-slate-800 dark:text-white"
                         />
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-2">
-                    <button onclick="toggleTheme()" class="p-2 rounded-full transition-colors hover:bg-gray-200 text-gray-600 dark:text-yellow-400 dark:hover:bg-gray-800">
-                        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+                <!-- Right Section: Theme Toggle -->
+                <div class="flex items-center">
+                    <button onclick="toggleTheme()" class="relative p-3 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors group overflow-hidden">
+                        <div class="relative z-10 text-slate-600 dark:text-yellow-400">
+                            <i id="theme-icon" data-lucide="moon" class="w-6 h-6 transition-transform duration-500 rotate-0 dark:rotate-180"></i>
+                        </div>
                     </button>
                 </div>
             </div>
         </header>
 
+        <!-- SPACER for Fixed Header -->
+        <div class="h-24"></div>
+
         <!-- LIBRARY VIEW -->
-        <main id="library-view" class="container mx-auto px-4 py-8">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-2 dark:text-white">Thư viện Dạy Con Làm Giàu</h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Trọn bộ 13 tập kinh điển của Robert Kiyosaki
-                </p>
-                <p class="text-xs text-yellow-600 mt-2 italic bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400 p-2 rounded inline-block">
-                    Mẹo: Nếu file PDF > 25MB, bạn có thể up lên Google Drive rồi dán link vào code.
-                </p>
+        <main id="library-view" class="container mx-auto px-4 pb-12 animate-fade-in">
+            <!-- Hero / Intro -->
+            <div class="flex flex-col md:flex-row items-end justify-between mb-10 gap-4">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-3 text-slate-900 dark:text-white tracking-tight">
+                        Thư viện sách
+                    </h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-lg max-w-2xl">
+                        Trọn bộ 13 tập kinh điển của Robert Kiyosaki - Hành trình thay đổi tư duy tài chính.
+                    </p>
+                </div>
+                <div class="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                    <span>Sử dụng Google Drive để tải nhanh hơn</span>
+                </div>
             </div>
 
+            <!-- Grid -->
             <div id="book-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <!-- Books will be injected here via JS -->
             </div>
             
-            <div id="no-results" class="hidden text-center py-20 opacity-50 dark:text-white">
-                <p>Không tìm thấy cuốn sách nào phù hợp.</p>
+            <!-- No Results State -->
+            <div id="no-results" class="hidden flex flex-col items-center justify-center py-20 text-center opacity-0 animate-fade-in">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 dark:bg-slate-800">
+                    <i data-lucide="search-x" class="w-10 h-10 text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-700 dark:text-slate-300">Không tìm thấy sách</h3>
+                <p class="text-slate-500">Thử tìm kiếm với từ khóa khác xem sao.</p>
             </div>
         </main>
 
         <!-- READER VIEW (Hidden by default) -->
-        <div id="reader-view" class="hidden flex flex-col h-[calc(100vh-64px)] bg-gray-50 dark:bg-gray-900">
+        <div id="reader-view" class="hidden fixed inset-0 z-[60] bg-slate-50 dark:bg-slate-900 flex flex-col animate-slide-up">
             <!-- Reader Toolbar -->
-            <div class="h-14 border-b flex items-center justify-between px-4 shadow-sm bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                <button onclick="goHome()" class="flex items-center space-x-2 hover:opacity-70 dark:text-white">
+            <div class="h-16 flex items-center justify-between px-4 md:px-6 bg-white border-b border-gray-200 shadow-sm dark:bg-slate-800 dark:border-slate-700">
+                <button onclick="goHome()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                    <span class="hidden sm:inline font-medium">Thư viện</span>
+                    <span class="font-semibold">Thư viện</span>
                 </button>
                 
-                <div class="flex-1 text-center px-4">
-                    <h2 id="reader-title" class="text-sm sm:text-base font-bold truncate max-w-xs sm:max-w-md mx-auto dark:text-white">
-                        Đang đọc sách...
+                <div class="flex-1 px-4 text-center">
+                    <h2 id="reader-title" class="text-base md:text-lg font-bold truncate max-w-xs md:max-w-xl mx-auto text-slate-800 dark:text-white">
+                        Đang tải...
                     </h2>
                 </div>
 
-                <div class="flex items-center space-x-3">
-                     <a id="download-btn" href="#" target="_blank" class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white" title="Mở/Tải file gốc">
+                <div class="flex items-center gap-2">
+                     <a id="download-btn" href="index.html" target="_blank" class="p-2.5 rounded-lg text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-blue-400" title="Mở file gốc">
                         <i data-lucide="external-link" class="w-5 h-5"></i>
                      </a>
                 </div>
             </div>
 
             <!-- PDF Container -->
-            <div id="pdf-container" class="flex-1 relative w-full h-full bg-gray-200 dark:bg-gray-900">
+            <div id="pdf-container" class="flex-1 relative w-full h-full bg-gray-200 dark:bg-slate-950">
                 <!-- Nội dung PDF sẽ được inject vào đây bằng JS -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+                </div>
             </div>
         </div>
 
@@ -138,22 +209,20 @@
     <!-- JAVASCRIPT -->
     <script>
         // --- 1. DỮ LIỆU SÁCH ---
-        // Bạn có thể dán link Google Drive vào 'pdf_file' nếu file quá nặng.
-        // Ví dụ: pdf_file: "https://drive.google.com/file/d/xxxxx/view?usp=sharing"
         const books = [
-            { id: 1, vol: "Tập 1", title: "Để không có tiền vẫn tạo ra tiền", subtitle: "Rich Dad Poor Dad", color: "from-yellow-400 to-orange-500", pdf_file: "https://drive.google.com/file/d/1SB5t--79cyPT2NUTZjA24eEHgNW95xJ0/view?usp=drive_link", summary: "Cuốn sách khởi đầu, so sánh tư duy giữa người cha nghèo và người cha giàu." },
-            { id: 2, vol: "Tập 2", title: "Sử dụng đồng vốn", subtitle: "Cashflow Quadrant", color: "from-blue-400 to-indigo-500", pdf_file: "https://drive.google.com/file/d/1lw69V2dhkdMrRpEmbvr3f4HmTzivRLGS/view?usp=drive_link", summary: "Giải thích về Kim tứ đồ và cách chuyển sang nhóm C và Đ." },
-            { id: 3, vol: "Tập 3", title: "Hướng dẫn đầu tư", subtitle: "Guide to Investing", color: "from-green-400 to-emerald-600", pdf_file: "https://drive.google.com/file/d/18jKoRi0MDwXn5YKEvY4uY9mIdQqxr4CP/view?usp=sharing", summary: "Hướng dẫn chi tiết về các cấp bậc đầu tư." },
-            { id: 4, vol: "Tập 4", title: "Con giàu con thông minh", subtitle: "Rich Kid Smart Kid", color: "from-pink-400 to-rose-500", pdf_file: "https://drive.google.com/file/d/1vEHy9GE3r5vfTYsHAFW0v-llpjeNU9R7/view?usp=drive_link", summary: "Khai phá tiềm năng tài chính cho con cái." },
-            { id: 5, vol: "Tập 5", title: "Để có sức mạnh về tài chính", subtitle: "Retire Young Retire Rich", color: "from-purple-400 to-violet-600", pdf_file: "https://drive.google.com/file/d/1iNO8pP7Db-SzJTPU8vioB99_7hdAQ2Mb/view?usp=drive_link", summary: "Cách sử dụng đòn bẩy tài chính để nghỉ hưu sớm." },
-            { id: 6, vol: "Tập 6", title: "Những câu chuyện thành công", subtitle: "Prophecy", color: "from-red-400 to-red-600", pdf_file: "https://drive.google.com/file/d/1XbUjjVJgVioDmbYKjTBgVAxg7XsKuwai/view?usp=drive_link", summary: "Tuyển tập những câu chuyện thực tế." },
-            { id: 7, vol: "Tập 7", title: "Ai đã lấy tiền của tôi?", subtitle: "Who Took My Money?", color: "from-teal-400 to-teal-600", pdf_file: "https://drive.google.com/file/d/1r9Y0i0aSpGNEmyE_zrmYBh41vh3zHg7S/view?usp=drive_link", summary: "Đầu tư kiếm lợi nhuận cao và bảo vệ tài sản." },
-            { id: 8, vol: "Tập 8", title: "Để có tích sự đến tiền của tôi", subtitle: "Making Money Work", color: "from-cyan-400 to-blue-500", pdf_file: "https://drive.google.com/file/d/1_Ty0f9ycTSNxYd-Y3QjzNgPVOVqUj8Wi/view?usp=drive_link", summary: "Hiểu rõ về dòng tiền." },
-            { id: 9, vol: "Tập 9", title: "Những bí mật về tiền bạc", subtitle: "Financial Secrets", color: "from-amber-400 to-yellow-600", pdf_file: "https://drive.google.com/file/d/1fA0EpS11RWY2fRR0DJbulFutoRWhxkLD/view?usp=drive_link", summary: "Những điều không bao giờ được học ở nhà trường." },
-            { id: 10, vol: "Tập 10", title: "Trước khi bạn thôi việc", subtitle: "Before You Quit Your Job", color: "from-lime-400 to-green-600", pdf_file: "https://drive.google.com/file/d/1pXmJgxlNIxbzw3NzIWpdfatU4ebagwAB/view?usp=sharing", summary: "Bài học cho người muốn khởi nghiệp." },
-            { id: 11, vol: "Tập 11", title: "Trường dạy kinh doanh", subtitle: "Business School", color: "from-indigo-400 to-purple-500", pdf_file: "https://drive.google.com/file/d/1GR9mx5cvF9SjBPIZQXRXe2LJIV9LHKhN/view?usp=drive_link", summary: "Giá trị của kinh doanh theo mạng." },
-            { id: 12, vol: "Tập 12", title: "Xây dựng con thuyền tài chính", subtitle: "Building Your Ark", color: "from-sky-400 to-blue-600", pdf_file: "https://drive.google.com/file/d/1IGTApTTg7d1nruVusEXH9q-q7RAEe5PT/view?usp=drive_link", summary: "Bảo vệ tương lai tài chính trước biến động." },
-            { id: 13, vol: "Tập 13", title: "Nâng cao chỉ số IQ tài chính", subtitle: "Increase Your Financial IQ", color: "from-fuchsia-400 to-pink-600", pdf_file: "https://drive.google.com/file/d/1QQsI5tem8qfjiHK2qilCP411cJ9WquFc/view?usp=sharing", summary: "5 chỉ số IQ tài chính cốt lõi." },
+            { id: 1, vol: "Tập 1", title: "Để không có tiền vẫn tạo ra tiền", subtitle: "Rich Dad Poor Dad", color: "from-yellow-400 to-orange-500", shadow: "shadow-orange-500/30", pdf_file: "https://drive.google.com/file/d/1SB5t--79cyPT2NUTZjA24eEHgNW95xJ0/view?usp=drive_link", summary: "Cuốn sách khởi đầu, so sánh tư duy giữa người cha nghèo và người cha giàu." },
+            { id: 2, vol: "Tập 2", title: "Sử dụng đồng vốn", subtitle: "Cashflow Quadrant", color: "from-blue-400 to-indigo-500", shadow: "shadow-blue-500/30", pdf_file: "https://drive.google.com/file/d/1lw69V2dhkdMrRpEmbvr3f4HmTzivRLGS/view?usp=drive_link", summary: "Giải thích về Kim tứ đồ và cách chuyển sang nhóm C và Đ." },
+            { id: 3, vol: "Tập 3", title: "Hướng dẫn đầu tư", subtitle: "Guide to Investing", color: "from-green-400 to-emerald-600", shadow: "shadow-green-500/30", pdf_file: "https://drive.google.com/file/d/18jKoRi0MDwXn5YKEvY4uY9mIdQqxr4CP/view?usp=sharing", summary: "Hướng dẫn chi tiết về các cấp bậc đầu tư." },
+            { id: 4, vol: "Tập 4", title: "Con giàu con thông minh", subtitle: "Rich Kid Smart Kid", color: "from-rose-400 to-red-500", shadow: "shadow-rose-500/30", pdf_file: "https://drive.google.com/file/d/1vEHy9GE3r5vfTYsHAFW0v-llpjeNU9R7/view?usp=drive_link", summary: "Khai phá tiềm năng tài chính cho con cái." },
+            { id: 5, vol: "Tập 5", title: "Để có sức mạnh về tài chính", subtitle: "Retire Young Retire Rich", color: "from-purple-400 to-violet-600", shadow: "shadow-purple-500/30", pdf_file: "https://drive.google.com/file/d/1iNO8pP7Db-SzJTPU8vioB99_7hdAQ2Mb/view?usp=drive_link", summary: "Cách sử dụng đòn bẩy tài chính để nghỉ hưu sớm." },
+            { id: 6, vol: "Tập 6", title: "Những câu chuyện thành công", subtitle: "Prophecy", color: "from-red-400 to-red-600", shadow: "shadow-red-500/30", pdf_file: "https://drive.google.com/file/d/1XbUjjVJgVioDmbYKjTBgVAxg7XsKuwai/view?usp=drive_link", summary: "Tuyển tập những câu chuyện thực tế." },
+            { id: 7, vol: "Tập 7", title: "Ai đã lấy tiền của tôi?", subtitle: "Who Took My Money?", color: "from-teal-400 to-teal-600", shadow: "shadow-teal-500/30", pdf_file: "https://drive.google.com/file/d/1r9Y0i0aSpGNEmyE_zrmYBh41vh3zHg7S/view?usp=drive_link", summary: "Đầu tư kiếm lợi nhuận cao và bảo vệ tài sản." },
+            { id: 8, vol: "Tập 8", title: "Để có tích sự đến tiền của tôi", subtitle: "Making Money Work", color: "from-cyan-400 to-blue-500", shadow: "shadow-cyan-500/30", pdf_file: "https://drive.google.com/file/d/1_Ty0f9ycTSNxYd-Y3QjzNgPVOVqUj8Wi/view?usp=drive_link", summary: "Hiểu rõ về dòng tiền." },
+            { id: 9, vol: "Tập 9", title: "Những bí mật về tiền bạc", subtitle: "Financial Secrets", color: "from-amber-400 to-yellow-600", shadow: "shadow-amber-500/30", pdf_file: "https://drive.google.com/file/d/1fA0EpS11RWY2fRR0DJbulFutoRWhxkLD/view?usp=drive_link", summary: "Những điều không bao giờ được học ở nhà trường." },
+            { id: 10, vol: "Tập 10", title: "Trước khi bạn thôi việc", subtitle: "Before You Quit Your Job", color: "from-lime-500 to-green-700", shadow: "shadow-lime-500/30", pdf_file: "https://drive.google.com/file/d/1pXmJgxlNIxbzw3NzIWpdfatU4ebagwAB/view?usp=sharing", summary: "Bài học cho người muốn khởi nghiệp." },
+            { id: 11, vol: "Tập 11", title: "Trường dạy kinh doanh", subtitle: "Business School", color: "from-indigo-400 to-purple-600", shadow: "shadow-indigo-500/30", pdf_file: "https://drive.google.com/file/d/1GR9mx5cvF9SjBPIZQXRXe2LJIV9LHKhN/view?usp=drive_link", summary: "Giá trị của kinh doanh theo mạng." },
+            { id: 12, vol: "Tập 12", title: "Xây dựng con thuyền tài chính", subtitle: "Building Your Ark", color: "from-sky-400 to-blue-600", shadow: "shadow-sky-500/30", pdf_file: "https://drive.google.com/file/d/1IGTApTTg7d1nruVusEXH9q-q7RAEe5PT/view?usp=drive_link", summary: "Bảo vệ tương lai tài chính trước biến động." },
+            { id: 13, vol: "Tập 13", title: "Nâng cao chỉ số IQ tài chính", subtitle: "Increase Your Financial IQ", color: "from-fuchsia-500 to-pink-600", shadow: "shadow-fuchsia-500/30", pdf_file: "https://drive.google.com/file/d/1QQsI5tem8qfjiHK2qilCP411cJ9WquFc/view?usp=sharing", summary: "5 chỉ số IQ tài chính cốt lõi." },
         ];
 
         // --- 2. STATE & VARIABLES ---
@@ -177,6 +246,11 @@
             renderBooks(books);
             updateThemeUI();
             lucide.createIcons();
+            
+            // Auto focus search on desktop
+            if(window.innerWidth > 768) {
+                searchInput.focus();
+            }
         }
 
         // Render danh sách sách
@@ -184,37 +258,56 @@
             bookGrid.innerHTML = '';
             if (list.length === 0) {
                 noResults.classList.remove('hidden');
+                noResults.style.opacity = '1';
             } else {
                 noResults.classList.add('hidden');
-                list.forEach(book => {
+                list.forEach((book, index) => {
+                    // Stagger animation delay
+                    const delay = index * 50; 
+                    
                     const card = document.createElement('div');
-                    card.className = `group relative cursor-pointer rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1 bg-white dark:bg-gray-800`;
+                    card.className = `group relative flex flex-col cursor-pointer rounded-2xl overflow-hidden bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 hover:border-yellow-300 dark:hover:border-yellow-600 shadow-lg hover:shadow-2xl hover:shadow-yellow-500/10 transition-all duration-300 transform hover:-translate-y-2 animate-slide-up`;
+                    card.style.animationDelay = `${delay}ms`;
+                    
                     card.onclick = () => openBook(book);
 
                     card.innerHTML = `
-                        <div class="h-32 w-full bg-gradient-to-r ${book.color} flex items-center justify-center">
-                            <span class="text-4xl font-bold text-white opacity-30 select-none">${book.id}</span>
-                        </div>
-                        <div class="p-5">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-gray-700 dark:text-blue-300">
+                        <!-- Cover Gradient Area -->
+                        <div class="h-36 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br ${book.color} opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            
+                            <!-- Decorative Circles -->
+                            <div class="absolute -top-4 -right-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-black opacity-5 rounded-full blur-xl"></div>
+
+                            <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+                                <span class="text-xs font-bold uppercase tracking-wider text-white/80 mb-1 border border-white/20 px-2 py-0.5 rounded-full bg-black/10 backdrop-blur-sm">
                                     ${book.vol}
                                 </span>
+                                <h3 class="text-white font-bold text-3xl drop-shadow-md select-none opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                                    ${book.id}
+                                </h3>
                             </div>
-                            <h3 class="font-bold text-lg mb-1 leading-tight text-gray-900 dark:text-white">
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="p-5 flex-1 flex flex-col relative">
+                            <!-- Floating Action Button (Hidden by default, shows on hover) -->
+                            <div class="absolute -top-6 right-4 w-12 h-12 bg-white dark:bg-slate-700 rounded-full shadow-lg flex items-center justify-center text-yellow-500 scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-10">
+                                <i data-lucide="book-open" class="w-5 h-5 fill-current"></i>
+                            </div>
+
+                            <h3 class="font-bold text-lg mb-1 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
                                 ${book.title}
                             </h3>
-                            <p class="text-sm mb-3 text-gray-500 dark:text-gray-400">
+                            <p class="text-xs font-medium text-yellow-600 dark:text-yellow-500 mb-3 uppercase tracking-wide">
                                 ${book.subtitle}
                             </p>
-                            <p class="text-sm line-clamp-2 text-gray-600 dark:text-gray-300">
-                                ${book.summary}
-                            </p>
-                        </div>
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                            <span class="bg-white text-black px-4 py-2 rounded-full font-bold shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
-                                Đọc ngay
-                            </span>
+                            <div class="mt-auto">
+                                <p class="text-sm line-clamp-2 text-slate-500 dark:text-slate-400 leading-relaxed">
+                                    ${book.summary}
+                                </p>
+                            </div>
                         </div>
                     `;
                     bookGrid.appendChild(card);
@@ -239,55 +332,68 @@
             // Xóa nội dung cũ
             pdfContainer.innerHTML = '';
             
+            // Loading spinner
+            const spinner = document.createElement('div');
+            spinner.className = "absolute inset-0 flex items-center justify-center z-0";
+            spinner.innerHTML = `<div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-yellow-500"></div>`;
+            pdfContainer.appendChild(spinner);
+
             const fileUrl = book.pdf_file;
             
-            // KIỂM TRA LOẠI FILE ĐỂ HIỂN THỊ
-            if (fileUrl.includes("drive.google.com")) {
-                // TRƯỜNG HỢP: Link Google Drive
-                const iframe = document.createElement('iframe');
-                iframe.src = getEmbedUrl(fileUrl);
-                iframe.className = "drive-iframe";
-                iframe.allow = "autoplay";
-                pdfContainer.appendChild(iframe);
-            } 
-            else {
-                // TRƯỜNG HỢP: File PDF Local (trong máy chủ)
-                const objectTag = document.createElement('object');
-                objectTag.data = fileUrl + "#view=FitH"; 
-                objectTag.type = "application/pdf";
-                objectTag.className = "w-full h-full border-0 rounded-b-lg";
-                
-                // Fallback cho trình duyệt mobile không hỗ trợ <object> PDF
-                const fallbackContent = document.createElement('div');
-                fallbackContent.className = "flex flex-col items-center justify-center h-full text-center p-8";
-                fallbackContent.innerHTML = `
-                    <i data-lucide="file-warning" class="w-16 h-16 text-gray-400 mb-4"></i>
-                    <p class="mb-4 text-gray-600 dark:text-gray-400">
-                        Không thể xem trực tiếp (Do trình duyệt hoặc file quá lớn).
-                    </p>
-                    <a href="${fileUrl}" target="_blank" class="px-6 py-3 bg-yellow-500 text-white font-bold rounded-lg hover:bg-yellow-600 transition shadow-lg">
-                        Mở file gốc
-                    </a>
-                `;
-                
-                objectTag.appendChild(fallbackContent);
-                pdfContainer.appendChild(objectTag);
-            }
+            // Timeout để tạo hiệu ứng load (và để UI mượt hơn)
+            setTimeout(() => {
+                 // KIỂM TRA LOẠI FILE ĐỂ HIỂN THỊ
+                if (fileUrl.includes("drive.google.com")) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = getEmbedUrl(fileUrl);
+                    iframe.className = "drive-iframe relative z-10 w-full h-full opacity-0 transition-opacity duration-500";
+                    iframe.allow = "autoplay";
+                    iframe.onload = () => { iframe.style.opacity = '1'; }; // Fade in khi load xong
+                    pdfContainer.appendChild(iframe);
+                } 
+                else {
+                    const objectTag = document.createElement('object');
+                    objectTag.data = fileUrl + "#view=FitH"; 
+                    objectTag.type = "application/pdf";
+                    objectTag.className = "w-full h-full border-0 relative z-10";
+                    
+                    const fallbackContent = document.createElement('div');
+                    fallbackContent.className = "flex flex-col items-center justify-center h-full text-center p-8 relative z-20 bg-gray-50 dark:bg-slate-900";
+                    fallbackContent.innerHTML = `
+                        <div class="bg-red-100 p-4 rounded-full mb-4 dark:bg-red-900/20">
+                            <i data-lucide="file-warning" class="w-8 h-8 text-red-500"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white">Không thể xem trực tiếp</h3>
+                        <p class="mb-6 text-gray-500 max-w-sm mx-auto">
+                            Trình duyệt này không hỗ trợ xem PDF nhúng hoặc file quá lớn.
+                        </p>
+                        <a href="${fileUrl}" target="_blank" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl transition shadow-lg hover:shadow-yellow-500/30 flex items-center gap-2">
+                            <i data-lucide="download"></i> Mở file gốc
+                        </a>
+                    `;
+                    
+                    objectTag.appendChild(fallbackContent);
+                    pdfContainer.appendChild(objectTag);
+                }
+            }, 300);
+            
+            // Chuyển view
+            document.body.style.overflow = 'hidden'; // Khóa scroll trang chủ
+            readerView.classList.remove('hidden');
             
             // Re-render icons
-            lucide.createIcons();
-
-            // Chuyển view
-            libraryView.classList.add('hidden');
-            readerView.classList.remove('hidden');
-            window.scrollTo(0, 0);
+            setTimeout(() => lucide.createIcons(), 100);
         }
 
         // Quay về trang chủ
         function goHome() {
+            document.body.style.overflow = ''; // Mở scroll
             readerView.classList.add('hidden');
-            libraryView.classList.remove('hidden');
-            pdfContainer.innerHTML = ''; // Dọn dẹp iframe/object
+            
+            // Dọn dẹp sau 300ms để animation mượt (nếu có exit animation)
+            setTimeout(() => {
+                pdfContainer.innerHTML = ''; 
+            }, 300);
         }
 
         // Tìm kiếm
@@ -299,6 +405,7 @@
                 book.subtitle.toLowerCase().includes(query)
             );
             renderBooks(filtered);
+            lucide.createIcons(); // Re-init icons cho các card mới
         }
 
         // Dark Mode Logic
@@ -310,18 +417,19 @@
 
         function updateThemeUI() {
             const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
             if (isDarkMode) {
                 html.classList.add('dark');
-                themeIcon.setAttribute('data-lucide', 'sun');
+                icon.setAttribute('data-lucide', 'sun');
             } else {
                 html.classList.remove('dark');
-                themeIcon.setAttribute('data-lucide', 'moon');
+                icon.setAttribute('data-lucide', 'moon');
             }
             lucide.createIcons();
         }
 
         // Chạy khởi tạo khi load trang
-        init();
+        window.addEventListener('DOMContentLoaded', init);
 
     </script>
 </body>
