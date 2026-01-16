@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Thư Viện Sách Hiện Đại</title>
+    <title>Thư Viện Sách</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -123,7 +123,7 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-5 sm:px-8 py-8 w-full pb-20">
         
-        <!-- SECTION TỦ SÁCH (Đã bỏ phần Sách Yêu Thích ngang, chuyển hết vào Menu) -->
+        <!-- SECTION TỦ SÁCH -->
         <section class="animate-entry" style="animation-delay: 0.1s;">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold text-slate-800">Tủ Sách Của Bạn</h2>
@@ -255,9 +255,14 @@
         lucide.createIcons();
 
         // ==========================================
-        // DỮ LIỆU SÁCH
+        // DỮ LIỆU SÁCH VÀ LƯU TRỮ (LOCAL STORAGE)
         // ==========================================
-        let books = [
+        
+        // Key để lưu vào trình duyệt
+        const STORAGE_KEY = 'my_library_favorites';
+
+        // Danh sách sách gốc
+        const defaultBooks = [
             {
                 id: 1,
                 title: "Dạy Con Làm Giàu",
@@ -265,7 +270,6 @@
                 category: "Kinh Tế",
                 desc: "Dạy con làm giàu.",
                 cover: "https://cdn1.fahasa.com/media/catalog/product/d/a/day_con_lam_giau__tap_1_1_2018_08_03_15_23_14.jpg",
-                isFavorite: true,
                 link: "dayconlamgiau.html"
             },
             {
@@ -275,7 +279,6 @@
                 category: "Kỹ năng sống",
                 desc: "Nghệ thuật thu phục lòng người. Quy tắc ứng xử để thành công trong giao tiếp và cuộc sống.",
                 cover: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=400",
-                isFavorite: false,
                 link: "https://google.com" 
             },
             {
@@ -285,7 +288,6 @@
                 category: "Lập trình",
                 desc: "Hướng dẫn viết mã sạch. Cuốn sách gối đầu giường cho mọi lập trình viên chuyên nghiệp.",
                 cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400",
-                isFavorite: false,
                 link: "#"
             },
             {
@@ -295,7 +297,6 @@
                 category: "Lịch sử",
                 desc: "Lược sử loài người từ thời kỳ đồ đá đến kỷ nguyên công nghệ sinh học và trí tuệ nhân tạo.",
                 cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400",
-                isFavorite: false,
                 link: "#"
             },
             {
@@ -305,7 +306,6 @@
                 category: "Self-help",
                 desc: "Cuốn sách dành cho người trẻ đang loay hoay tìm hướng đi, khuyến khích tự học và trải nghiệm.",
                 cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=400",
-                isFavorite: true,
                 link: "#"
             },
              {
@@ -315,7 +315,6 @@
                 category: "Giả tưởng",
                 desc: "Cậu bé phù thủy và chuyến phiêu lưu tại trường Hogwarts chống lại chúa tể hắc ám.",
                 cover: "https://images.unsplash.com/photo-1618666012174-83b441c0bc76?auto=format&fit=crop&q=80&w=400",
-                isFavorite: true,
                 link: "#"
             },
             {
@@ -325,10 +324,37 @@
                 category: "Tâm lý học",
                 desc: "Phân tích hai hệ thống tư duy chi phối nhận thức và cách chúng ta đưa ra quyết định.",
                 cover: "https://images.unsplash.com/photo-1555449373-4f952c427670?auto=format&fit=crop&q=80&w=400",
-                isFavorite: false,
                 link: "#"
             }
         ];
+
+        // Khởi tạo sách với trạng thái từ Local Storage
+        let books = [...defaultBooks];
+
+        function initBooksState() {
+            const storedFavs = localStorage.getItem(STORAGE_KEY);
+            let favIds = [];
+
+            if (storedFavs) {
+                // Nếu đã có dữ liệu trong máy, dùng nó
+                favIds = JSON.parse(storedFavs);
+            } else {
+                // Nếu chưa có (lần đầu vào), ta có thể chọn vài cuốn làm mẫu hoặc để trống
+                // Ở đây mình để trống cho sạch, hoặc bạn có thể set [1, 2] để demo
+                favIds = [1]; 
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(favIds));
+            }
+
+            // Map trạng thái isFavorite vào danh sách books
+            books = books.map(book => ({
+                ...book,
+                isFavorite: favIds.includes(book.id)
+            }));
+        }
+
+        // Chạy hàm khởi tạo ngay
+        initBooksState();
+
 
         // ==========================================
         // MAIN RENDER LOGIC
@@ -390,7 +416,7 @@
         renderGrid();
 
         // ==========================================
-        // FAVORITES LOGIC (XỬ LÝ YÊU THÍCH)
+        // FAVORITES LOGIC (XỬ LÝ YÊU THÍCH & LƯU)
         // ==========================================
         const favSidebar = document.getElementById('fav-sidebar');
         const favBackdrop = document.getElementById('fav-backdrop');
@@ -398,16 +424,20 @@
         const favTotalCount = document.getElementById('fav-total-count');
         const favCountBadge = document.getElementById('fav-count-badge');
         
-        let currentOpenBookId = null; // Theo dõi sách nào đang mở trong modal
+        let currentOpenBookId = null;
 
-        // Toggle Favorite (Hàm quan trọng nhất)
+        // Toggle Favorite (Hàm quan trọng nhất - Đã cập nhật tính năng LƯU)
         function toggleFavorite(bookId) {
             const book = books.find(b => b.id === bookId);
             if (!book) return;
 
             book.isFavorite = !book.isFavorite; // Đảo trạng thái
             
-            // Render lại mọi thứ liên quan
+            // --- CẬP NHẬT LƯU TRỮ ---
+            const currentFavIds = books.filter(b => b.isFavorite).map(b => b.id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentFavIds));
+            
+            // Render lại mọi thứ
             renderFavoritesSidebar();
             renderGrid(); // Update badge trên grid
             updateModalFavButtonState(book.isFavorite); // Update nút trong modal nếu đang mở
@@ -468,7 +498,6 @@
         function openFavSidebar() {
             renderFavoritesSidebar(); // Đảm bảo dữ liệu mới nhất
             favBackdrop.classList.remove('hidden');
-            // Timeout nhỏ để transition hoạt động
             setTimeout(() => {
                 favBackdrop.classList.remove('opacity-0');
                 favSidebar.classList.add('sidebar-open');
@@ -582,7 +611,7 @@
         });
 
         // ==========================================
-        // SEARCH LOGIC (GIỮ NGUYÊN)
+        // SEARCH LOGIC
         // ==========================================
         const searchOverlay = document.getElementById('search-overlay');
         const searchInput = document.getElementById('search-input');
